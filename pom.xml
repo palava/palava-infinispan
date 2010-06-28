@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+		<groupId>de.cosmocode.palava</groupId>
+		<artifactId>palava-parent</artifactId>
+		<version>2.3.2</version>
+	</parent>
+
+    <groupId>de.cosmocode.palava</groupId>
+    <artifactId>palava-infinispan</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>Palava Infinispan</name>
+
+    <scm>
+		<developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-infinispan/trunk/</developerConnection>
+	</scm>
+
+	<repositories>
+		<repository>
+			<id>cosmocode-public</id>
+			<name>CosmoCode Public Maven Repository</name>
+			<url>http://mvn.cosmocode.de/</url>
+		</repository>
+        <repository>
+			<id>jboss-unstable</id>
+			<name>JBoss Unstable Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.cosmocode.palava</groupId>
+            <artifactId>palava-core</artifactId>
+            <version>[2,3)</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-core</artifactId>
+            <version>4.1.0.BETA2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-multibindings</artifactId>
+            <version>2.0</version>
+        </dependency>
+    </dependencies>
+    
+</project>
