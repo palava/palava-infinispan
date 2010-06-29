@@ -31,18 +31,19 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
+ * 
+ * 
  * @author Tobias Sarnowski
  */
 public final class InfinispanModule implements Module {
+    
     private static final Logger LOG = LoggerFactory.getLogger(InfinispanModule.class);
 
     private final String infinispanConfigurationFile;
 
-
     public InfinispanModule(String infinispanConfigurationFile) {
         this.infinispanConfigurationFile = infinispanConfigurationFile;
     }
-
 
     @Override
     public void configure(Binder binder) {
@@ -57,18 +58,19 @@ public final class InfinispanModule implements Module {
 
         // bind the cachemanager itself
         LOG.debug("Binding CacheManager '{}'", infinispanConfigurationFile);
-        binder.bind(CacheManager.class).annotatedWith(Names.named(infinispanConfigurationFile)).toInstance(embeddedCacheManager);
+        binder.bind(CacheManager.class).annotatedWith(Names.named(infinispanConfigurationFile)).
+            toInstance(embeddedCacheManager);
 
         // bind the cachemanager for later retrieval
         Multibinder.newSetBinder(binder, EmbeddedCacheManager.class).addBinding().toInstance(embeddedCacheManager);
 
-
-        for (String cacheName: embeddedCacheManager.getCacheNames()) {
-            Cache cache = embeddedCacheManager.getCache(cacheName);
+        for (String cacheName : embeddedCacheManager.getCacheNames()) {
+            final Cache<?, ?> cache = embeddedCacheManager.getCache(cacheName);
 
             // bind the cache
             LOG.debug("Binding named Cache '{}'", cacheName);
             binder.bind(Cache.class).annotatedWith(Names.named(cacheName)).toInstance(cache);
         }
     }
+    
 }

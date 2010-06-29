@@ -29,9 +29,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 
+ * 
  * @author Tobias Sarnowski
  */
 final class Infinispan implements Initializable, Disposable {
+    
     private static final Logger LOG = LoggerFactory.getLogger(Infinispan.class);
 
     private final Set<EmbeddedCacheManager> embeddedCacheManagers;
@@ -41,10 +44,9 @@ final class Infinispan implements Initializable, Disposable {
         this.embeddedCacheManagers = embeddedCacheManagers;
     }
 
-
     @Override
     public void initialize() throws LifecycleException {
-        for (EmbeddedCacheManager embeddedCacheManager: embeddedCacheManagers) {
+        for (EmbeddedCacheManager embeddedCacheManager : embeddedCacheManagers) {
             LOG.info("Starting {}...", embeddedCacheManager);
             embeddedCacheManager.start();
         }
@@ -52,12 +54,14 @@ final class Infinispan implements Initializable, Disposable {
 
     @Override
     public void dispose() throws LifecycleException {
-        List<Exception> exceptions = Lists.newArrayList();
-        for (EmbeddedCacheManager embeddedCacheManager: embeddedCacheManagers) {
+        final List<Exception> exceptions = Lists.newArrayList();
+        for (EmbeddedCacheManager embeddedCacheManager : embeddedCacheManagers) {
             try {
                 LOG.info("Stopping {}...", embeddedCacheManager);
                 embeddedCacheManager.stop();
-            } catch (Exception e) {
+            /* CHECKSTYLE:OFF */
+            } catch (RuntimeException e) {
+            /* CHECKSTYLE:ON */
                 exceptions.add(e);
             }
         }
@@ -65,4 +69,5 @@ final class Infinispan implements Initializable, Disposable {
             throw new LifecycleException(new InfinispanExceptions(exceptions));
         }
     }
+        
 }
