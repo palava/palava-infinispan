@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * 
+ * A special exception which may contain multiple exceptions.
  * 
  * @author Tobias Sarnowski
  */
@@ -52,4 +52,5 @@ public class InfinispanExceptions extends Exception {
     public String getMessage() {
         return getMessage() + "\n\n" + JOINER.join(exceptions);
     }
+    
 }

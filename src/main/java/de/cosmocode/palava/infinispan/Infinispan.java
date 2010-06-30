@@ -21,6 +21,8 @@ import com.google.inject.Inject;
 import de.cosmocode.palava.core.lifecycle.Disposable;
 import de.cosmocode.palava.core.lifecycle.Initializable;
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
+
+import org.infinispan.Cache;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ * A service which manages lifecycles for multiple Infinispan {@link Cache}s
+ * configured via {@link InfinispanModule}.
  * 
  * @author Tobias Sarnowski
  */
@@ -37,28 +40,28 @@ final class Infinispan implements Initializable, Disposable {
     
     private static final Logger LOG = LoggerFactory.getLogger(Infinispan.class);
 
-    private final Set<EmbeddedCacheManager> embeddedCacheManagers;
+    private final Set<EmbeddedCacheManager> managers;
 
     @Inject
-    public Infinispan(Set<EmbeddedCacheManager> embeddedCacheManagers) {
-        this.embeddedCacheManagers = embeddedCacheManagers;
+    public Infinispan(Set<EmbeddedCacheManager> managers) {
+        this.managers = managers;
     }
 
     @Override
     public void initialize() throws LifecycleException {
-        for (EmbeddedCacheManager embeddedCacheManager : embeddedCacheManagers) {
-            LOG.info("Starting {}...", embeddedCacheManager);
-            embeddedCacheManager.start();
+        for (EmbeddedCacheManager manager : managers) {
+            LOG.info("Starting {}...", manager);
+            manager.start();
         }
     }
 
     @Override
     public void dispose() throws LifecycleException {
         final List<Exception> exceptions = Lists.newArrayList();
-        for (EmbeddedCacheManager embeddedCacheManager : embeddedCacheManagers) {
+        for (EmbeddedCacheManager manager : managers) {
             try {
-                LOG.info("Stopping {}...", embeddedCacheManager);
-                embeddedCacheManager.stop();
+                LOG.info("Stopping {}...", manager);
+                manager.stop();
             /* CHECKSTYLE:OFF */
             } catch (RuntimeException e) {
             /* CHECKSTYLE:ON */
