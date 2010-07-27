@@ -16,10 +16,10 @@
 
 package de.cosmocode.palava.infinispan;
 
+import java.util.List;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
 
 /**
  * A special exception which may contain multiple exceptions.

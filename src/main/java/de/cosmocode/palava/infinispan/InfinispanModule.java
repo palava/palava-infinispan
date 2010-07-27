@@ -16,12 +16,8 @@
 
 package de.cosmocode.palava.infinispan;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
-import de.cosmocode.palava.core.lifecycle.LifecycleException;
+import java.io.IOException;
+
 import org.infinispan.Cache;
 import org.infinispan.manager.CacheManager;
 import org.infinispan.manager.DefaultCacheManager;
@@ -29,7 +25,13 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import com.google.common.base.Preconditions;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
+
+import de.cosmocode.palava.core.lifecycle.LifecycleException;
 
 /**
  * Binds {@link Cache}s dynamically by reading the given config file.
