@@ -16,22 +16,20 @@
 
 package de.cosmocode.palava.infinispan;
 
-import java.io.IOException;
-
-import org.infinispan.Cache;
-import org.infinispan.manager.CacheManager;
-import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.manager.EmbeddedCacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
+import org.infinispan.Cache;
+import org.infinispan.manager.CacheContainer;
+import org.infinispan.manager.DefaultCacheManager;
+import org.infinispan.manager.EmbeddedCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Binds {@link Cache}s dynamically by reading the given config file.
@@ -60,7 +58,7 @@ public final class InfinispanModule implements Module {
 
         // bind the cachemanager itself
         LOG.debug("Binding CacheManager '{}'", configFile);
-        binder.bind(CacheManager.class).annotatedWith(Names.named(configFile)).toInstance(manager);
+        binder.bind(CacheContainer.class).annotatedWith(Names.named(configFile)).toInstance(manager);
 
         // bind the cachemanager for later retrieval
         Multibinder.newSetBinder(binder, EmbeddedCacheManager.class).addBinding().toInstance(manager);
