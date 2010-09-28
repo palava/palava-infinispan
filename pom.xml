@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <version>4.1.0.CR2</version>
+            <version>4.1.0.FINAL</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
