@@ -21,51 +21,52 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-import de.cosmocode.palava.core.lifecycle.LifecycleException;
 import org.infinispan.Cache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.manager.CacheContainer;
-import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.Properties;
 
 /**
- * Binds {@link Cache}s dynamically by reading the given config file.
- * 
+ * Binds {@link org.infinispan.Cache}s dynamically by reading the given config file.
+ *
  * @author Tobias Sarnowski
  */
-public final class InfinispanModule implements Module {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(InfinispanModule.class);
+public final class InfinispanRemoteModule implements Module {
 
-    private final String configFile;
+    private static final Logger LOG = LoggerFactory.getLogger(InfinispanRemoteModule.class);
 
-    public InfinispanModule(String configFile) {
-        this.configFile = Preconditions.checkNotNull(configFile, "ConfigFile");
+    private final Properties properties;
+    private final String[] cacheNames;
+
+    /**
+     * Atm no support for named/annotated CacheContainer bindings.
+     *
+     * For more informations about properties see:
+     * http://docs.jboss.org/infinispan/4.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html
+     *
+     * @param configuration client configuration
+     * @param cacheNames which named caches to bind
+     */
+    public InfinispanRemoteModule(Properties configuration, String[] cacheNames) {
+        this.cacheNames = Preconditions.checkNotNull(cacheNames, "CacheNames");
+        this.properties = Preconditions.checkNotNull(configuration, "Properties");
     }
 
     @Override
     public void configure(Binder binder) {
-        final EmbeddedCacheManager manager;
-
-        try {
-            manager = new DefaultCacheManager(configFile);
-        } catch (IOException e) {
-            throw new LifecycleException(e);
-        }
+        final CacheContainer manager = new RemoteCacheManager(properties);
 
         // bind the cachemanager itself
-        LOG.debug("Binding CacheManager '{}'", configFile);
-        binder.bind(CacheContainer.class).annotatedWith(Names.named(configFile)).toInstance(manager);
+        LOG.debug("Binding RemoteCacheManager {}", manager);
+        binder.bind(CacheContainer.class).toInstance(manager);
 
         // bind the cachemanager for later retrieval
-        Multibinder.newSetBinder(binder, EmbeddedCacheManager.class).addBinding().toInstance(manager);
         Multibinder.newSetBinder(binder, CacheContainer.class).addBinding().toInstance(manager);
 
-        // bind named caches
-        for (String name : manager.getCacheNames()) {
+        for (String name : cacheNames) {
             final Cache<?, ?> cache = manager.getCache(name);
             LOG.debug("Binding named Cache '{}'", name);
             binder.bind(Cache.class).annotatedWith(Names.named(name)).toInstance(cache);

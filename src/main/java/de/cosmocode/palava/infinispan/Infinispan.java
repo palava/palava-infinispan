@@ -16,20 +16,18 @@
 
 package de.cosmocode.palava.infinispan;
 
-import java.util.List;
-import java.util.Set;
-
-import org.infinispan.Cache;
-import org.infinispan.manager.EmbeddedCacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-
 import de.cosmocode.palava.core.lifecycle.Disposable;
 import de.cosmocode.palava.core.lifecycle.Initializable;
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
+import org.infinispan.Cache;
+import org.infinispan.manager.CacheContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * A service which manages lifecycles for multiple Infinispan {@link Cache}s
@@ -41,16 +39,16 @@ final class Infinispan implements Initializable, Disposable {
     
     private static final Logger LOG = LoggerFactory.getLogger(Infinispan.class);
 
-    private final Set<EmbeddedCacheManager> managers;
+    private final Set<CacheContainer> managers;
 
     @Inject
-    public Infinispan(Set<EmbeddedCacheManager> managers) {
+    Infinispan(Set<CacheContainer> managers) {
         this.managers = managers;
     }
 
     @Override
     public void initialize() throws LifecycleException {
-        for (EmbeddedCacheManager manager : managers) {
+        for (CacheContainer manager : managers) {
             LOG.info("Starting {}...", manager);
             manager.start();
         }
@@ -59,7 +57,7 @@ final class Infinispan implements Initializable, Disposable {
     @Override
     public void dispose() throws LifecycleException {
         final List<Exception> exceptions = Lists.newArrayList();
-        for (EmbeddedCacheManager manager : managers) {
+        for (CacheContainer manager : managers) {
             try {
                 LOG.info("Stopping {}...", manager);
                 manager.stop();
@@ -69,7 +67,7 @@ final class Infinispan implements Initializable, Disposable {
                 exceptions.add(e);
             }
         }
-        if (exceptions.size() > 0) {
+        if (!exceptions.isEmpty()) {
             throw new LifecycleException(new InfinispanExceptions(exceptions));
         }
     }

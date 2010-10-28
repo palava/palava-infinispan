@@ -16,10 +16,10 @@
 
 package de.cosmocode.palava.infinispan;
 
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 /**
  * A special exception which may contain multiple exceptions.
@@ -50,7 +50,7 @@ public class InfinispanExceptions extends Exception {
 
     @Override
     public String getMessage() {
-        return getMessage() + "\n\n" + JOINER.join(exceptions);
+        return super.getMessage() + "\n\n" + JOINER.join(exceptions);
     }
     
 }
