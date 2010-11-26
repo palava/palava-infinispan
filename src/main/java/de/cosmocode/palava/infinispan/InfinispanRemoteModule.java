@@ -16,18 +16,19 @@
 
 package de.cosmocode.palava.infinispan;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
+import java.util.Properties;
+
 import org.infinispan.Cache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.manager.CacheContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
+import com.google.common.base.Preconditions;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
 
 /**
  * Binds {@link org.infinispan.Cache}s dynamically by reading the given config file.

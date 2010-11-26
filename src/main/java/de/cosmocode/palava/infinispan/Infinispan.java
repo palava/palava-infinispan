@@ -16,18 +16,20 @@
 
 package de.cosmocode.palava.infinispan;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import de.cosmocode.palava.core.lifecycle.Disposable;
-import de.cosmocode.palava.core.lifecycle.Initializable;
-import de.cosmocode.palava.core.lifecycle.LifecycleException;
+import java.util.List;
+import java.util.Set;
+
 import org.infinispan.Cache;
 import org.infinispan.manager.CacheContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Set;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+
+import de.cosmocode.palava.core.lifecycle.Disposable;
+import de.cosmocode.palava.core.lifecycle.Initializable;
+import de.cosmocode.palava.core.lifecycle.LifecycleException;
 
 /**
  * A service which manages lifecycles for multiple Infinispan {@link Cache}s
