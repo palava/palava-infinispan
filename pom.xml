@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-		<groupId>de.cosmocode.palava</groupId>
-		<artifactId>palava-parent</artifactId>
-		<version>2.4.0</version>
-	</parent>
+    <groupId>de.cosmocode.palava</groupId>
+    <artifactId>palava-parent</artifactId>
+    <version>2.4.0</version>
+  </parent>
 
     <groupId>de.cosmocode.palava</groupId>
     <artifactId>palava-infinispan</artifactId>
@@ -15,21 +15,21 @@
     <name>Palava Infinispan</name>
 
     <scm>
-		<developerConnection>scm:git:git@github.com:palava/${project.artifactId}.git</developerConnection>
-	</scm>
+    <developerConnection>scm:git:git@github.com:palava/${project.artifactId}.git</developerConnection>
+  </scm>
 
-	<repositories>
-		<repository>
-			<id>cosmocode-public</id>
-			<name>CosmoCode Public Maven Repository</name>
-			<url>http://mvn.cosmocode.de/</url>
-		</repository>
+  <repositories>
+    <repository>
+      <id>cosmocode-public</id>
+      <name>CosmoCode Public Maven Repository</name>
+      <url>http://mvn.cosmocode.de/</url>
+    </repository>
         <repository>
-			<id>jboss-unstable</id>
-			<name>JBoss Unstable Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
+      <id>jboss-unstable</id>
+      <name>JBoss Unstable Repository</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
 
     <dependencies>
         <dependency>
