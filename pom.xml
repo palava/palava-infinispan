@@ -1,72 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
     <groupId>de.cosmocode.palava</groupId>
     <artifactId>palava-parent</artifactId>
-    <version>2.4.0</version>
+    <version>2.6.0</version>
   </parent>
-
     <groupId>de.cosmocode.palava</groupId>
     <artifactId>palava-infinispan</artifactId>
     <version>1.3-SNAPSHOT</version>
-
     <name>Palava Infinispan</name>
-
     <scm>
     <developerConnection>scm:git:git@github.com:palava/${project.artifactId}.git</developerConnection>
   </scm>
-
   <repositories>
     <repository>
       <id>cosmocode-public</id>
       <name>CosmoCode Public Maven Repository</name>
       <url>http://mvn.cosmocode.de/</url>
     </repository>
-        <repository>
-      <id>jboss-unstable</id>
-      <name>JBoss Unstable Repository</name>
+    <repository>
+      <id>jboss</id>
       <url>https://repository.jboss.org/nexus/content/groups/public/</url>
     </repository>
   </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>de.cosmocode.palava</groupId>
-            <artifactId>palava-core</artifactId>
-            <version>[2,3)</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
-            <version>4.1.0.FINAL</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-client-hotrod</artifactId>
-            <version>4.1.0.FINAL</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-multibindings</artifactId>
-            <version>2.0</version>
-        </dependency>
-    </dependencies>
-    
+  <dependencies>
+    <dependency>
+      <groupId>de.cosmocode.palava</groupId>
+      <artifactId>palava-core</artifactId>
+      <version>[2,3)</version>
+    </dependency>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-core</artifactId>
+      <version>4.1.0.FINAL</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-client-hotrod</artifactId>
+      <version>4.1.0.FINAL</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-multibindings</artifactId>
+      <version>2.0</version>
+    </dependency>
+  </dependencies>
 </project>
