@@ -19,6 +19,8 @@ package de.cosmocode.palava.infinispan;
 import java.io.IOException;
 
 import org.infinispan.Cache;
+import org.infinispan.api.BasicCache;
+import org.infinispan.api.BasicCacheContainer;
 import org.infinispan.manager.CacheContainer;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
@@ -60,16 +62,19 @@ public final class InfinispanModule implements Module {
 
         // bind the cachemanager itself
         LOG.debug("Binding CacheManager '{}'", configFile);
+        binder.bind(BasicCacheContainer.class).annotatedWith(Names.named(configFile)).toInstance(manager);
         binder.bind(CacheContainer.class).annotatedWith(Names.named(configFile)).toInstance(manager);
 
         // bind the cachemanager for later retrieval
         Multibinder.newSetBinder(binder, EmbeddedCacheManager.class).addBinding().toInstance(manager);
+        Multibinder.newSetBinder(binder, BasicCacheContainer.class).addBinding().toInstance(manager);
         Multibinder.newSetBinder(binder, CacheContainer.class).addBinding().toInstance(manager);
 
         // bind named caches
         for (String name : manager.getCacheNames()) {
             final Cache<?, ?> cache = manager.getCache(name);
             LOG.debug("Binding named Cache '{}'", name);
+            binder.bind(BasicCache.class).annotatedWith(Names.named(name)).toInstance(cache);
             binder.bind(Cache.class).annotatedWith(Names.named(name)).toInstance(cache);
         }
 

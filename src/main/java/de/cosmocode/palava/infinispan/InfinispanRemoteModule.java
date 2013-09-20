@@ -16,19 +16,19 @@
 
 package de.cosmocode.palava.infinispan;
 
-import java.util.Properties;
-
-import org.infinispan.Cache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.manager.CacheContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+import org.infinispan.api.BasicCache;
+import org.infinispan.api.BasicCacheContainer;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 /**
  * Binds {@link org.infinispan.Cache}s dynamically by reading the given config file.
@@ -58,19 +58,21 @@ public final class InfinispanRemoteModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        final CacheContainer manager = new RemoteCacheManager(properties);
+        final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        configurationBuilder.withProperties(properties);
+        final BasicCacheContainer manager = new RemoteCacheManager(configurationBuilder.build());
 
         // bind the cachemanager itself
         LOG.debug("Binding RemoteCacheManager {}", manager);
-        binder.bind(CacheContainer.class).toInstance(manager);
+        binder.bind(BasicCacheContainer.class).toInstance(manager);
 
         // bind the cachemanager for later retrieval
-        Multibinder.newSetBinder(binder, CacheContainer.class).addBinding().toInstance(manager);
+        Multibinder.newSetBinder(binder, BasicCacheContainer.class).addBinding().toInstance(manager);
 
         for (String name : cacheNames) {
-            final Cache<?, ?> cache = manager.getCache(name);
+            final BasicCache<?, ?> cache = manager.getCache(name);
             LOG.debug("Binding named Cache '{}'", name);
-            binder.bind(Cache.class).annotatedWith(Names.named(name)).toInstance(cache);
+            binder.bind(BasicCache.class).annotatedWith(Names.named(name)).toInstance(cache);
         }
 
         // lifecycle service
